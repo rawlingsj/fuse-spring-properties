@@ -1,0 +1,21 @@
+fabric:create --clean
+
+wait-for-service org.apache.karaf.features.FeaturesService
+
+################
+### Profiles ###
+################
+
+# Base tru profile
+fabric:profile-create --parents mq-base --parents default --parents camel my-example-profile
+fabric:profile-edit -r mvn:com.fuse.spring.example/fuse-spring-example-features/${project.version}/xml/features my-example-profile
+fabric:profile-edit --features fuse-spring-example-feature my-example-profile
+
+##################
+### Containers ###
+##################
+
+# Basic container
+fabric:container-create-child --profile my-example-profile root my-container
+
+watch fabric:container-list
